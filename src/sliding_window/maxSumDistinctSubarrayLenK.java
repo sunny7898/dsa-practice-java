@@ -10,7 +10,11 @@ import java.util.Set;
 
 public class maxSumDistinctSubarrayLenK {
 
-    public static long maximumSubarraySum(int[] nums, int k) {
+    /*
+
+    Approach 1: Brute force:
+
+    public long maximumSubarraySum(int[] nums, int k) {
 
         int n = nums.length;
         long maxSum = 0;
@@ -30,5 +34,40 @@ public class maxSumDistinctSubarrayLenK {
         }
 
         return maxSum;
+    }*/
+
+    /* Optimized: Sliding - window*/
+
+    public long maximumSubarraySum(int[] nums, int k) {
+
+        int n = nums.length;
+        long maxWindowSum = 0;
+        long currentSum = 0;
+        Set<Integer> subarr = new HashSet<>();
+        int start = 0;
+        long currWindowSum = 0;
+
+        for (int end = 0; end < n; end++) {
+            while (subarr.contains(nums[end])) {
+                subarr.remove(nums[start]);
+                currWindowSum -= nums[start];
+                start++;
+            }
+
+            subarr.add(nums[end]);
+            currWindowSum += nums[end];
+
+            if (end - start + 1 > k) {
+                subarr.remove(nums[start]);
+                currWindowSum -= nums[start];
+                start++;
+            }
+
+            if (end - start + 1 == k) {
+                maxWindowSum = Math.max(currWindowSum, maxWindowSum);
+            }
+
+        }
+        return maxWindowSum;
     }
 }
