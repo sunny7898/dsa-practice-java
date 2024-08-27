@@ -15,9 +15,7 @@ public class PrintMaxSumSubarray {
 
         for (int i = 0; i < n; i++) {
 
-            if (currentSum == 0) {
-                currentStart = i;
-            }
+            if (currentSum == 0) currentStart = i;
 
             currentSum += a[i];
 
@@ -27,10 +25,7 @@ public class PrintMaxSumSubarray {
                 end = i;
             }
 
-            if (currentSum < 0) {
-                currentSum = 0;
-                currentStart = i + 1;
-            }
+            if (currentSum < 0) currentSum = 0;
         }
 
         ArrayList<Integer> res = new ArrayList<>();

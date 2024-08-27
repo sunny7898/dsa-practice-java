@@ -6,26 +6,30 @@ import java.lang.*;
 public class AggressiveCows {
 
     private static boolean canPlaceCows(int[] stalls, int N, int C, int mid) {
-        int numCows = C - 1;
+        int numCows = 0;
         int lastCowPosition = stalls[0];
 
         for (int i = 1; i < N; i++) {
             if (stalls[i] - lastCowPosition >= mid) {
-                numCows--;
+                numCows++;
                 lastCowPosition = stalls[i];
             }
-            if (numCows == 0) return true;
+            if (numCows >= C) return true;
         }
         return false;
     }
     private static int getMinimumLargestDistance(int[] stalls, int N, int C) {
 
+        // Sorting was done, since the min distance between two stalls would be when they are consecutive
         Arrays.sort(stalls);
         //  int best = 0;
         int low = 1, high = stalls[N - 1] - stalls[0];
         while (low <= high) {
             int mid = (low + high) / 2;
 
+            // mid = possible min difference
+            // if you can place all the cows in the mid-difference,
+            // then try for increasing the mid (min diff in distance) between them
             if (canPlaceCows(stalls, N, C, mid)){
                 // best = mid;
                 low = mid + 1;
