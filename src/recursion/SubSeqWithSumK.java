@@ -2,7 +2,7 @@ package recursion;
 
 import java.util.ArrayList;
 
-public class CheckIfThereExistSubSeqWithSumK {
+public class SubSeqWithSumK {
 
     /* Brute force:
        - Once the subsequence of target Sum is found, this will return and won't continue the function calls
