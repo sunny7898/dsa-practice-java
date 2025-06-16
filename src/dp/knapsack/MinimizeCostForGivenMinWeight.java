@@ -1,4 +1,4 @@
-package dp_knapsack;
+package dp.knapsack;
 
 import java.util.Arrays;
 import java.util.List;

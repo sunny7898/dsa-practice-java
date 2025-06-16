@@ -39,23 +39,44 @@ public class CountSubarraysWithSumK {
 
         // Optimized TC: O(N) SC: O(N)
 
-        int n = nums.length;  // Length of the input array
-        int count = 0;  // Initialize a counter to keep track of subarrays that sum to k
+        Map<Integer, Integer> prefixSumFrequency = new HashMap<>();
+        prefixSumFrequency.put(0, 1);
+        /*
+            Base case: sum 0 occurs once
+            This takes care of the case when prefixSum == k, in that case we need to count
+            that subarray as well
 
-        Map<Integer, Integer> mp = new HashMap<>();  // HashMap to store the frequency of each prefix sum encountered
+            we can handle it in two ways:
+            a. If we don't initialize the map with (0, 1) - sum 0, count of such subarr = 1
+            in this case we will always check for prefixSum - k in the map. We will not check
+            for prefixSum == k, since the above is already taking care of that.
+
+            b. If we don't initialize the map, then we would also need to check for
+            prefixSum == k scenario.
+
+            Below code:
+
+            for (int num : nums) {
+                prefixSum += num;
+
+                if (prefixSum == k) count++;
+                if (mp.containsKey(prefixSum - k)) count += mp.get(prefixSum - k);
+
+                mp.put(prefixSum, mp.getOrDefault(prefixSum, 0) + 1);
+            }
+
+        */
         int prefixSum = 0;
-        for (int i = 0; i < n;  i++) {
-            prefixSum += nums[i];
-            if (prefixSum == k) count++;  // If the current prefixSum equals k, we found a valid subarray
+        int count = 0;
 
-            // If there exists a subarray with sum = (current prefixSum - k),
-            // it indicates that there is a subarray that sums to k
-            if (mp.containsKey(prefixSum - k)) count += mp.get(prefixSum - k);
+        for (int num : nums) {
+            prefixSum += num;
+            int target = prefixSum - k;
 
-            // Store or update the frequency of the current prefixSum in the HashMap
-            mp.put(prefixSum, mp.getOrDefault(prefixSum, 0) + 1);
+            count += prefixSumFrequency.getOrDefault(target, 0);
+            prefixSumFrequency.put(prefixSum, prefixSumFrequency.getOrDefault(prefixSum, 0) + 1);
         }
 
-        return count;  // Return the total count of subarrays that sum to k
+        return count;
     }
 }

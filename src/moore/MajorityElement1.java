@@ -1,6 +1,28 @@
 package moore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MajorityElement1 {
+    public int majorityElementWithMap(int[] nums) {
+        Map<Integer, Integer> freqMap = new HashMap<>();
+
+        for (int num: nums){
+            freqMap.put(num, freqMap.getOrDefault(num, 0)+1);
+        }
+
+        int majorityElement = nums[0];
+        int maxCount = 0;
+
+        for (Map.Entry<Integer, Integer> e: freqMap.entrySet()){
+            if (e.getValue() > maxCount){
+                majorityElement = e.getKey();
+                maxCount = e.getValue();
+            }
+        }
+
+        return majorityElement;
+    }
     public int majorityElement(int[] arr) {
         int n = arr.length;
 

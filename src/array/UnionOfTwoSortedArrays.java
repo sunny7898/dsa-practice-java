@@ -1,33 +1,22 @@
 package array;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class UnionOfTwoSortedArrays {
     public static ArrayList<Integer> findUnion(int arr1[], int arr2[], int n, int m) {
 
         // Brute force:
-        // // Step 1: Combine both arrays into one array
-        // int[] combined = new int[n + m];
-        // System.arraycopy(arr1, 0, combined, 0, n);
-        // System.arraycopy(arr2, 0, combined, n, m);
-        //
-        // // Step 2: Sort the combined array
-        // Arrays.sort(combined);
-        //
-        // // Step 3: Remove duplicates
-        // ArrayList<Integer> union = new ArrayList<>();
-        // for (int i = 0; i < combined.length; i++) {
-        //     if (i == 0 || combined[i] != combined[i - 1]) {
-        //         union.add(combined[i]);
-        //     }
-        // }
-        // return union;
+//        Set<Integer> set = new HashSet<>();
+//        for (int num : arr1) set.add(num);
+//        for (int num : arr2) set.add(num);
+//
+//        List<Integer> result = new ArrayList<>(set);
+//        Collections.sort(result);
+//        return result;
 
         // Better:
         // Set<Integer> set = new HashSet<>();
-        // // If linkedhashset, no need of sorting the union array
+        // If linkedhashset, the order would be preserved but not sorted
         // // Set<Integer> set = new LinkedHashSet<>();
         //
         // // Insert all elements of arr1 and arr2 into the set

@@ -1,5 +1,8 @@
 package hashing;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LongestSubarrayWithSumK_PosNegZero {
 
     public static int lenOfLongSubarr (int A[], int N, int K) {
@@ -12,7 +15,7 @@ public class LongestSubarrayWithSumK_PosNegZero {
         int left = 0, right = 0;  // Initialize two pointers for the sliding window approach
         while (right < N) {  // Continue while the right pointer is within array bounds
 
-            // Shrink the window from the left if the current sum exceeds K
+            // Keep Shrinking the window from the left till the current sum exceeds K
             while (left <= right && sum > K) {
                 sum -= A[left];  // Subtract the element at left pointer from the sum
                 left++;  // Move the left pointer to the right
@@ -28,43 +31,43 @@ public class LongestSubarrayWithSumK_PosNegZero {
                 sum += A[right];  // Add the element at the right pointer to the sum
             }
         }
-        return maxLength;
+//        return maxLength;
 
 
         //  Optimal if array contains +ve, -ve and 0 - Hashing
 
-        // int maxLen = 0;
-        // long prefixSum = 0;
-        // // Create a map to store the first occurrence of each prefix sum
-        // Map<Long, Integer> mp = new HashMap<>();
+         int maxLen2 = 0;
+         long prefixSum = 0;
+         // Create a map to store the first occurrence of each prefix sum
+         Map<Long, Integer> mp = new HashMap<>();
 
-        // // Traverse the prefix sum array
-        // for (int i = 0; i < N; i++) {
+         // Traverse the prefix sum array
+         for (int i = 0; i < N; i++) {
 
-        //     prefixSum += A[i];
+             prefixSum += A[i];
 
-        //     // If the prefix sum itself is equal to K, update maxLen
-        //     if (prefixSum == K) maxLen = Math.max(maxLen, i + 1);
+             // If the prefix sum itself is equal to K, update maxLen
+             if (prefixSum == K) maxLen2 = Math.max(maxLen2, i + 1);
 
-        //     // Check if there is a previous prefix sum such that
-        //     // the difference is equal to K
-        //     if (mp.containsKey(prefixSum - K)) {
-        //         maxLen = Math.max(maxLen, i - mp.get(prefixSum - K));
-        //     }
+             // Check if there is a previous prefix sum such that
+             // the difference is equal to K
+             if (mp.containsKey(prefixSum - K)) {
+                 maxLen2 = Math.max(maxLen2, i - mp.get(prefixSum - K));
+             }
 
-        //     // Only store the first occurrence to maximize the length of subarray
-        //     /*
-        //         this handles the case when we have gotten a prefixSum but it is then
-        //         followed by 0s or -ve numbers.
-        //         if we again store it, then later i - idxfromMap would be smaller
-        //         therefore for a prefixSum, we would only keep the index
-        //         of its first occurrence,
+             // Only store the first occurrence to maximize the length of subarray
+             /*
+                 this handles the case when we have gotten a prefixSum, but it is then
+                 followed by 0s or -ve numbers.
+                 if we again store it, then later i - idxfromMap would be smaller
+                 therefore for a prefixSum, we would only keep the index
+                 of its first occurrence,
 
-        //     */
-        //     if (!mp.containsKey(prefixSum)) mp.put(prefixSum, i);
-        // }
+             */
+             if (!mp.containsKey(prefixSum)) mp.put(prefixSum, i);
+         }
 
-        // return maxLen;
+         return maxLen2;
 
     }
 }

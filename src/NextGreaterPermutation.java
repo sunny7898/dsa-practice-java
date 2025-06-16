@@ -14,16 +14,18 @@ public class NextGreaterPermutation {
     //         }
     //     }
     // }
-    private void reverse(int[] nums, int left, int right) {
-        while (left <= right) {
-            int temp = nums[left];
-            nums[left] = nums[right];
-            nums[right] = temp;
-            left++;
-            right--;
+    private void swap(int[] nums, int first, int second){
+        int temp = nums[first];
+        nums[first] = nums[second];
+        nums[second] = temp;
+    }
+    private void reverse(int[] nums, int start, int end){
+        while(start <= end) {
+            swap(nums, start, end);
+            start++;
+            end--;
         }
     }
-
     public void nextPermutation(int[] nums) {
 
         // Brute force:
@@ -81,35 +83,32 @@ public class NextGreaterPermutation {
 
         // Optimized: O(n)
         int n = nums.length;
-        if (n < 2) return;
-
-        // Step 1: find the pivot: >= for array contains duplicate elements - [2 1 5 4 3 0 0]
+        // Step 1: Finding the pivot
         int pivotIdx = -1;
-        for (int i = n - 2; i >= 0; i--) {
-            if (nums[i] < nums[i + 1]){
+        for (int i = n-2; i >= 0; i--){
+            if (nums[i] < nums[i + 1]) {
                 pivotIdx = i;
                 break;
             }
         }
-
-        // if no pivot element, means we are on the greatest permutation,
-        // so, reverse the complete array to get the next permutation - which will be the smallest one
+        /*
+            If no pivot, means array is at the last permutation. Ex: 1,2,3,4,5
+            the next greater would simply be the reverse of it
+        */
         if (pivotIdx == -1) {
-            reverse(nums, 0, n - 1);
+            reverse(nums, 0, n-1);
             return;
         }
 
-        // find the next successor (element greater than pivot - from array end till pivotIdx + 1
-        // and swap it from pivot
-        for (int i = n - 1; i > pivotIdx; i--) {
+        // Step 2: Finding the next successor
+        for (int i = n-1; i >= pivotIdx; i--) {
             if (nums[i] > nums[pivotIdx]) {
-                // swap the successor and pivot
-                int temp = nums[pivotIdx];
-                nums[pivotIdx] = nums[i];
-                nums[i] = temp;
+                swap(nums, i, pivotIdx);
                 break;
             }
         }
-        reverse(nums, pivotIdx + 1, n - 1);
+
+        // Step 3: Reverse from pivotIdx + 1 to n because even after swap, the graph is still same
+        reverse(nums, pivotIdx+1, n-1);
     }
 }
