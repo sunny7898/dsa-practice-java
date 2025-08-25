@@ -1,33 +1,40 @@
 package binary_search;
 
 public class FindPeakIn2DArray {
-    private int getMaximumIdx(int[][] mat, int rows, int cols, int mid) {
-        int maxEle = -1;
-        int maxEleIdx = -1;
-        for (int i = 0; i < rows; i++) {
-            if (mat[i][mid] > maxEle) {
-                maxEle = mat[i][mid];
-                maxEleIdx = i;
+    private int getRowContainingMaxForGivenMid(int[][] mat, int m, int n, int mid){
+        int idx = -1;
+        int maxE = 0;
+        for (int i = 0; i < m; i++) {
+            if (mat[i][mid] > maxE) {
+                maxE = mat[i][mid];
+                idx = i;
             }
         }
-        return maxEleIdx;
+        return idx;
     }
+
     public int[] findPeakGrid(int[][] mat) {
         int m = mat.length;
         int n = mat[0].length;
 
-        int low = 0, high = n - 1;
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            int maxInColIdx = getMaximumIdx(mat, m, n, mid);
+        int left  = 0;
+        int right = n - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
 
-            int left = mid - 1 >= 0 ? mat[maxInColIdx][mid - 1] : -1;
-            int right = mid + 1 < n ? mat[maxInColIdx][mid + 1] : -1;
-            int curr = mat[maxInColIdx][mid];
+            int row = getRowContainingMaxForGivenMid(mat, m, n, mid);
 
-            if (curr > left && curr > right) return new int[]{maxInColIdx, mid};
-            else if (curr > left) low = mid + 1;
-            else if (curr < left) high = mid - 1;
+            int leftOfMid = mid > 0 ? mat[row][mid - 1] : -1;
+            int rightOfMid = mid < n-1 ? mat[row][mid + 1] : -1;
+            int atMid = mat[row][mid];
+
+            if (atMid > leftOfMid && atMid > rightOfMid) return new int[]{row, mid};
+
+            if (leftOfMid > atMid) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
         }
         return new int[]{-1, -1};
     }

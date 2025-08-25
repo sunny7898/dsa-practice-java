@@ -1,6 +1,21 @@
 package binary_search;
 
 public class FindPeak {
+    public int findPeakElementBrute(int[] nums) {
+        int n = nums.length;
+        int[] maxEle = new int[2];
+
+        maxEle[0] = nums[0];
+        maxEle[1] = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > maxEle[0]){
+                maxEle[0] = nums[i];
+                maxEle[1] = i;
+            }
+        }
+        return maxEle[1];
+    }
+
     public int findPeakElement(int[] nums) {
 
         int n = nums.length;

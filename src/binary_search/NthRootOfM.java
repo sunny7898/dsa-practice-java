@@ -4,39 +4,42 @@ public class NthRootOfM {
     // return -1 if > m
     // return 0 if < m
     // return 1 if == m
-    int nthPowerOfM(int mid, int n, int m) {
-
+    private int nthPowerOfM(int n, long mid, int m){
         long ans = 1;
-        for (int i = 1; i <= n; i++) {
-            ans = ans * mid;
+        while (n > 0){
+            if ((n & 1) == 1) {
+                ans = ans * mid; // Use up one power out of total n power for mid (mid * mid * .... n times)
+            }
+            mid = mid * mid;
+            n = n / 2;
 
-            // preventing the overflow state
+            if (ans == m) return 1;
             if (ans > m) return -1;
+
         }
 
-        if (ans == m) return 1;
         return 0;
     }
+    public int nthRoot(int n, int m) {
 
-    public int NthRoot(int n, int m){
+        int left = 1;
+        int right = m;
 
-        int low = 1;
-        int high = m;
+        while (left <= right) {
 
-        // Use binary search to iterate between 1 to m and eliminate the not needed
-        // search space.
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
+            int mid = (left + right) / 2;
 
-            int isNthPowerOfMidEqualsM= nthPowerOfM(mid, n, m);
-
+            int isNthPowerOfMidEqualsM = nthPowerOfM(n, mid, m);
             if (isNthPowerOfMidEqualsM == 1) return mid;
 
-            if (isNthPowerOfMidEqualsM == -1)
-                high = mid - 1;
-            else
-                low = mid + 1;
+            if (isNthPowerOfMidEqualsM == -1) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
         }
+
         return -1;
+
     }
 }

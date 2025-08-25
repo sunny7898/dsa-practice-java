@@ -1,39 +1,40 @@
 package binary_search;
 
 public class CapacityToShipPackagesWithinDDays {
+    private boolean checkForMidWtCapacity(int[] weights, int capacity, int days){
+        int wtCarry = 0;
+        int numDays = 0;
+        for (int weight: weights) {
+            wtCarry += weight;
+            if (wtCarry > capacity) {
+                wtCarry = weight;
+                numDays++;
+            }
+        }
+        if (wtCarry <= capacity) numDays++;
+        return numDays <= days;
+    }
     public int shipWithinDays(int[] weights, int days) {
         int n = weights.length;
+        int ans = -1;
 
-        int totalWeight = 0;
-        int maxWeight = 0;
-        for (int weight : weights) {
-            totalWeight += weight;
-            maxWeight = Math.max(weight, maxWeight);
+        int start = Integer.MIN_VALUE;
+        int end = 0;
+        for (int weight : weights){
+            start = Math.max(start, weight);
+            end += weight;
         }
 
-        if(days == 1) return totalWeight;
+        while (start <= end) {
+            int mid = (start + end) / 2;
 
-        int low = maxWeight, high = totalWeight;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            int numDays = 0;
-            int weightSum = 0;
-            for (int i = 0; i < n; i++) {
-                weightSum += weights[i];
-                if (weightSum > mid) {
-                    numDays++;
-                    weightSum = weights[i];
-                }
-            }
-            numDays++;
-
-            if (numDays > days) {
-                low = mid + 1;
+            if (checkForMidWtCapacity(weights, mid, days)) {
+                ans = mid;
+                end = mid - 1;
             } else {
-                high = mid - 1;
+                start = mid + 1;
             }
         }
-        return low;
+        return ans;
     }
 }

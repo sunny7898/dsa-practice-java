@@ -1,3 +1,5 @@
+package partition;
+
 public class NextGreaterPermutation {
     // private void generatePermutations(int[] nums, int start, List<List<Integer>> permutations) {
     //     if (start == nums.length) {

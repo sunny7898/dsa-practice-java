@@ -75,4 +75,39 @@ public class AllocateBooks {
         }
         return low;
     }
+    private static boolean bookAllocationPossible(ArrayList<Integer> arr, int n, int m, int tPages) {
+        int studentCount = 1;
+        int pagesCount = 0;
+        for (Integer pages: arr) {
+            pagesCount += pages;
+            if (pagesCount > tPages) {
+                studentCount++;
+                pagesCount = pages;
+            }
+        }
+        return studentCount <= m;
+    }
+    public static int findPagesCodeBetter(ArrayList<Integer> arr, int n, int m) {
+
+        if (m > n) return -1;
+
+        int left = 0;
+        int right = 0;
+        for (Integer num: arr) {
+            left = Math.max(num, left);
+            right += num;
+        }
+        int ans = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (bookAllocationPossible(arr, n, m, mid)) {
+                ans = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
 }

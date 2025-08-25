@@ -1,6 +1,21 @@
 package binary_search;
 
 public class SearchIn2DArray {
+    /*
+        Since the matrix is row-wise sorted and each row has n elements,
+        I can flatten it into a single array. If I pick an index mid,
+        then mid / n gives me the row (because every row has n elements),
+        and mid % n gives me the column (the offset within that row).
+        That way I can map any 1D index back to 2D coordinates.
+
+        Every row has n elements.
+        So if I divide mid by n, that tells me how many full rows are passed.
+        Hence: row = mid / n
+
+        Figure out the column
+        After filling row complete rows, the leftover is the position inside the current row.
+        That’s just the remainder: col = mid % n
+     */
     public boolean searchMatrix(int[][] matrix, int target) {
 
         int m = matrix.length;

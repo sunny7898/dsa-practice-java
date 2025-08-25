@@ -10,7 +10,6 @@ public class KokoEatingBananas {
         return totalHours;
     }
     public int minEatingSpeed(int[] piles, int h) {
-        int n = piles.length;
         int maxSpeed = 0;
         for (int numBananas : piles) {
             maxSpeed = Math.max(maxSpeed, numBananas);

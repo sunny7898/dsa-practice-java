@@ -1,47 +1,46 @@
 package binary_search;
 
 public class MinDaysToMakeMBouquets {
-    private boolean isRequiredBouquetPossible(int[] bloomDay, int possibleMinDay, int k, int m) {
-        int countBloomed = 0;
-        int possibleBouquets = 0;
-        for (int day: bloomDay) {
-            if (day <= possibleMinDay) {
-                countBloomed++;
+    private boolean canMakeMBouquets(int[] bloomDay, int m, int k, int days) {
+        int count = 0, bouquets = 0;
+        for (int day : bloomDay) {
+            if (day <= days) {
+                count++;
+                if (count == k) {
+                    bouquets++;
+                    count = 0;
+                }
             } else {
-                possibleBouquets += countBloomed / k;
-                countBloomed = 0;
+                count = 0;
             }
         }
-        possibleBouquets += countBloomed / k;
-        return possibleBouquets >= m;
+        return bouquets >= m;
     }
 
     public int minDays(int[] bloomDay, int m, int k) {
-        int totalFlowers = bloomDay.length;
-        long requiredFlowers = (long) m * k;
+        int ans = -1;
+        int n = bloomDay.length;
+        long totalFlowerNeeded = (long) m * k;
+        if (totalFlowerNeeded > n)
+            return -1;
 
-        // Case 1: Minimum number of flowers should atleast be the total flowers needed
-        if (totalFlowers < requiredFlowers) return -1;
-
-        int maxDay = Integer.MIN_VALUE;
-        int minDay = Integer.MAX_VALUE;
-        for (int day: bloomDay) {
-            maxDay = Math.max(maxDay, day);
-            minDay = Math.min(minDay, day);
+        int start = Integer.MAX_VALUE; // min
+        int end = Integer.MIN_VALUE; // max
+        for (int day : bloomDay) {
+            start = Math.min(day, start);
+            end = Math.max(day, end);
         }
 
-        int low = minDay, high = maxDay;
-        while (low <= high) {
-            int possibleMinDay = low + (high - low) / 2;
+        while (start <= end) {
+            int mid = (start + end) / 2;
 
-            if (isRequiredBouquetPossible(bloomDay, possibleMinDay, k, m)) {
-                high = possibleMinDay - 1;
+            if (canMakeMBouquets(bloomDay, m, k, mid)) {
+                ans = mid;
+                end = mid - 1;
+            } else {
+                start = mid + 1;
             }
-            else {
-                low = possibleMinDay + 1;
-            }
-
         }
-        return low;
+        return ans;
     }
 }

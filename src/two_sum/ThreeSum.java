@@ -3,14 +3,14 @@ package two_sum;
 import java.util.*;
 
 class ThreeSum {
-    public List<List<Integer>> threeSumBrute(int[] nums) {
+    public List<List<Integer>> threeSumBrute(int[] nums, int target) {
         int n = nums.length;
 
         Set<ArrayList<Integer>> st = new HashSet<>();
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
                 for(int k = j + 1; k < n; k++) {
-                    if (nums[i] + nums[j] + nums[k] == 0) {
+                    if (nums[i] + nums[j] + nums[k] == target) {
                         ArrayList<Integer> triplet = new ArrayList<>(Arrays.asList(nums[i], nums[j], nums[k]));
 
                         // Handling duplicates
@@ -25,7 +25,7 @@ class ThreeSum {
         return res;
     }
 
-    public List<List<Integer>> threeSumBetter(int[] nums) {
+    public List<List<Integer>> threeSumBetter(int[] nums, int target) {
         int n = nums.length;
 
         Set<ArrayList<Integer>> st = new HashSet<>();
@@ -34,16 +34,15 @@ class ThreeSum {
             Set<Integer> temp = new HashSet<>();
             for (int j = i + 1; j < n; j++) {
 
-                int third = -(nums[i] + nums[j]);
+                int third = target - (nums[i] + nums[j]);
                 if (temp.contains(third)) {
                     ArrayList<Integer> triplet = new ArrayList<>(Arrays.asList(nums[i], nums[j], third));
 
                     // Handling duplicates;
                     Collections.sort(triplet);
                     st.add(triplet);
-                } else {
-                    temp.add(nums[j]);
                 }
+                temp.add(nums[j]);
             }
         }
 
@@ -53,7 +52,7 @@ class ThreeSum {
 
 
     // Fix the i and use two pointer in the remaining, skip the elements already a part of triplet for i, j , k
-    public List<List<Integer>> threeSum(int[] nums) {
+    public List<List<Integer>> threeSum(int[] nums, int target) {
         int n = nums.length;
         List<List<Integer>> res = new ArrayList<>();
 
@@ -67,14 +66,14 @@ class ThreeSum {
             while (j < k) {
                 int sum = nums[i] + nums[j] + nums[k];
 
-                if (sum == 0) {
+                if (sum == target) {
                     res.add(Arrays.asList(nums[i], nums[j], nums[k]));
                     while (j < k && nums[j] == nums[j + 1]) j++;
                     while (k > j && nums[k] == nums[k - 1]) k--;
 
                     j++;
                     k--;
-                } else if (sum > 0) {
+                } else if (sum > target) {
                     k--;
                 } else {
                     j++;
