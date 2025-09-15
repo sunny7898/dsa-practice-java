@@ -1,12 +1,13 @@
 package recursion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
     You are given a string 'STR' containing lowercase English letters from a to z inclusive.
     Your task is to find all non-empty possible subsequences of 'STR'.
 */
-public class PrintAllSubsequences {
+public class PrintAllSubsets {
     private static void printSub(int i, int[] arr, ArrayList<Integer> list) {
         if (i == arr.length) {
             System.out.println(list.toString());
@@ -40,5 +41,39 @@ public class PrintAllSubsequences {
     }
     public static ArrayList<String> subsequences(String str) {
         return getAllSubsequences(str, "", 0);
+    }
+
+    private void createSubset1(int idx, int[] nums, List<Integer> subset, List<List<Integer>> result) {
+        if (idx == nums.length) {
+            result.add(new ArrayList<>(subset));
+            return;
+        }
+        // pick condition
+        subset.add(nums[idx]);
+        createSubset1(idx + 1, nums, subset, result);
+        // not pick condition
+        subset.remove(subset.size() - 1);
+        createSubset1(idx + 1, nums, subset, result);
+    }
+    public List<List<Integer>> subsetsMyWay(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        createSubset1(0, nums, new ArrayList<>(), result);
+        return result;
+    }
+
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(0, nums, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(int start, int[] nums, List<Integer> subset, List<List<Integer>> result) {
+        result.add(new ArrayList<>(subset));
+        for (int i = start; i < nums.length; i++) {
+            subset.add(nums[i]);
+            backtrack(i + 1, nums, subset, result);
+            subset.remove(subset.size() - 1);
+        }
     }
 }
